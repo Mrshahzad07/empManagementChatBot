@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Box, Card, CardContent, Typography, IconButton, Button,
+  Box, Card, CardContent, Typography,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Chip, Select, MenuItem, FormControl, InputLabel, alpha, Skeleton, Tooltip
+  Chip, alpha, Skeleton
 } from '@mui/material';
-import { Download, Description, Folder } from '@mui/icons-material';
+import { Description, Folder } from '@mui/icons-material';
 import { useQuery } from '@tanstack/react-query';
 import { documentsApi } from '../../services/api';
 import { useAppSelector } from '../../store';
 import { Document } from '../../types';
 import { format } from 'date-fns';
-import toast from 'react-hot-toast';
-import { useState } from 'react';
 
 const DOC_TYPE_CONFIG: Record<string, { label: string; color: string }> = {
   offer_letter: { label: 'Offer Letter', color: '#1565C0' },
@@ -28,16 +26,11 @@ const DOC_TYPE_CONFIG: Record<string, { label: string; color: string }> = {
 export default function DocumentsPage() {
   const isDark = useAppSelector((s) => s.ui.themeMode) === 'dark';
   const [filterType, setFilterType] = useState('');
-  const [downloading, setDownloading] = useState<number | null>(null);
 
   const { data: documents, isLoading } = useQuery({
     queryKey: ['documents', filterType],
     queryFn: () => documentsApi.list(filterType || undefined).then((r) => r.data),
   });
-
-  const handleDownload = async (doc: Document) => {
-    // Left empty, downloads are now handled by AI Chatbot
-  };
 
   return (
     <Box>

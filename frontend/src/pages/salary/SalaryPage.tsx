@@ -1,21 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Box, Card, CardContent, Typography, Button, Table, TableBody,
-  TableCell, TableContainer, TableHead, TableRow, Chip, IconButton,
-  Dialog, DialogTitle, DialogContent, DialogActions, TextField,
-  Select, MenuItem, FormControl, InputLabel, Tooltip, alpha, Skeleton,
-  Tab, Tabs, Grid, LinearProgress
+  Box, Card, CardContent, Typography, Table, TableBody,
+  TableCell, TableContainer, TableHead, TableRow, Chip,
+  alpha, Skeleton, Grid
 } from '@mui/material';
-import {
-  Download, CloudDownload, FileDownload, CheckCircle, Cancel,
-  AccessTime, Add, Filter, Search
-} from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { salaryApi } from '../../services/api';
 import { useAppSelector } from '../../store';
 import { SalaryRecord } from '../../types';
-import toast from 'react-hot-toast';
 
 const MONTH_NAMES = [
   '', 'January', 'February', 'March', 'April', 'May', 'June',
@@ -24,7 +17,6 @@ const MONTH_NAMES = [
 
 export default function SalaryPage() {
   const isDark = useAppSelector((s) => s.ui.themeMode) === 'dark';
-  const queryClient = useQueryClient();
 
   const selectedYear = new Date().getFullYear();
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  Box, Card, CardContent, Typography, Button, IconButton, Switch,
-  List, ListItem, ListItemText, ListItemIcon, Chip, Divider, alpha, Skeleton
+  Box, Card, CardContent, Typography, Button, IconButton,
+  List, ListItem, ListItemText, ListItemIcon, Chip, alpha, Skeleton
 } from '@mui/material';
 import {
-  Notifications, NotificationsActive, NotificationsOff, Circle, Check, DoneAll
+  NotificationsOff, Circle, Check, DoneAll
 } from '@mui/icons-material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { notificationsApi } from '../../services/api';

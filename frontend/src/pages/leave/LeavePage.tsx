@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Box, Card, CardContent, Typography, Button, Table, TableBody,
-  TableCell, TableContainer, TableHead, TableRow, Chip, IconButton,
-  Dialog, DialogTitle, DialogContent, DialogActions, TextField,
-  Select, MenuItem, FormControl, InputLabel, Grid, LinearProgress,
-  Tab, Tabs, alpha, Skeleton, Tooltip
+  Box, Card, CardContent, Typography, Table, TableBody,
+  TableCell, TableContainer, TableHead, TableRow, Chip,
+  Grid, LinearProgress,
+  alpha, Skeleton, Tooltip
 } from '@mui/material';
 import {
-  Add, CheckCircle, Cancel, AccessTime, EventNote, Pending
+  CheckCircle, Cancel, AccessTime, EventNote
 } from '@mui/icons-material';
-import { motion } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { leaveApi } from '../../services/api';
 import { useAppSelector } from '../../store';
 import { LeaveRequest, LeaveBalance } from '../../types';
-import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 
 const LEAVE_COLORS: Record<string, string> = {
@@ -31,16 +28,6 @@ const STATUS_CONFIG: Record<string, any> = {
 
 export default function LeavePage() {
   const isDark = useAppSelector((s) => s.ui.themeMode) === 'dark';
-  const queryClient = useQueryClient();
-  const [tab, setTab] = useState(0);
-  const [applyOpen, setApplyOpen] = useState(false);
-  const [form, setForm] = useState({
-    leave_type: 'annual',
-    start_date: '',
-    end_date: '',
-    reason: '',
-    is_emergency: false,
-  });
 
   const { data: balanceData, isLoading: balanceLoading } = useQuery({
     queryKey: ['leave-balance'],
@@ -51,39 +38,6 @@ export default function LeavePage() {
     queryKey: ['leave-history-all'],
     queryFn: () => leaveApi.getHistory({ limit: 50 }).then((r) => r.data),
   });
-
-  const applyMutation = useMutation({
-    mutationFn: (data: any) => leaveApi.applyLeave(data),
-    onSuccess: () => {
-      toast.success('Leave applied successfully! Pending HR approval.');
-      queryClient.invalidateQueries({ queryKey: ['leave-balance'] });
-      queryClient.invalidateQueries({ queryKey: ['leave-history-all'] });
-      setApplyOpen(false);
-      setForm({ leave_type: 'annual', start_date: '', end_date: '', reason: '', is_emergency: false });
-    },
-    onError: (err: any) => {
-      toast.error(err.response?.data?.detail || 'Failed to apply leave');
-    },
-  });
-
-  const cancelMutation = useMutation({
-    mutationFn: (id: number) => leaveApi.cancel(id),
-    onSuccess: () => {
-      toast.success('Leave request cancelled');
-      queryClient.invalidateQueries({ queryKey: ['leave-history-all'] });
-      queryClient.invalidateQueries({ queryKey: ['leave-balance'] });
-    },
-  });
-
-  const handleApply = () => {
-    if (!form.start_date || !form.end_date || !form.reason) {
-      toast.error('Please fill all required fields');
-      return;
-    }
-    applyMutation.mutate(form);
-  };
-
-  const LEAVE_TYPES = ['annual', 'sick', 'casual', 'emergency', 'marriage', 'maternity', 'paternity', 'unpaid'];
 
   return (
     <Box>
