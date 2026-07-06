@@ -123,14 +123,18 @@ export const salaryApi = {
   downloadSlip: async (salaryRecordId: number) => {
     try {
       const response = await api.get(`/salary/slips/${salaryRecordId}/download`, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `salary_slip_${salaryRecordId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const reader = new FileReader();
+      reader.onload = function() {
+        const link = document.createElement('a');
+        link.href = reader.result as string;
+        link.download = `salary_slip_${salaryRecordId}.pdf`;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      reader.readAsDataURL(blob);
     } catch (error) {
       toast.error('Failed to download PDF');
     }
@@ -149,14 +153,18 @@ export const documentsApi = {
   download: async (docId: number) => {
     try {
       const response = await api.get(`/documents/${docId}/download`, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `document_${docId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const reader = new FileReader();
+      reader.onload = function() {
+        const link = document.createElement('a');
+        link.href = reader.result as string;
+        link.download = `document_${docId}.pdf`;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      reader.readAsDataURL(blob);
     } catch (error) {
       toast.error('Failed to download document');
     }
@@ -167,14 +175,18 @@ export const documentsApi = {
   downloadGenerated: async (data: any) => {
     try {
       const response = await api.post('/documents/download-generated', data, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${data.document_name}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const reader = new FileReader();
+      reader.onload = function() {
+        const link = document.createElement('a');
+        link.href = reader.result as string;
+        link.download = `${data.document_name}.pdf`;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      reader.readAsDataURL(blob);
     } catch (error) {
       toast.error('Failed to download generated document');
     }
