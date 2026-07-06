@@ -123,7 +123,7 @@ export const salaryApi = {
   downloadSlip: async (salaryRecordId: number) => {
     try {
       const response = await api.get(`/salary/slips/${salaryRecordId}/download`, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', `salary_slip_${salaryRecordId}.pdf`);
@@ -149,10 +149,10 @@ export const documentsApi = {
   download: async (docId: number) => {
     try {
       const response = await api.get(`/documents/${docId}/download`, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `document_${docId}`);
+      link.setAttribute('download', `document_${docId}.pdf`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -167,7 +167,7 @@ export const documentsApi = {
   downloadGenerated: async (data: any) => {
     try {
       const response = await api.post('/documents/download-generated', data, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', `${data.document_name}.pdf`);
