@@ -130,7 +130,7 @@ export const salaryApi = {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
     } catch (error) {
       toast.error('Failed to download PDF');
     }
@@ -156,7 +156,7 @@ export const documentsApi = {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
     } catch (error) {
       toast.error('Failed to download document');
     }
@@ -174,7 +174,7 @@ export const documentsApi = {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
     } catch (error) {
       toast.error('Failed to download generated document');
     }
